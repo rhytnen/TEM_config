@@ -1,0 +1,17 @@
+pytem:
+  machines:
+    - type: pytem.Root
+      states:
+        - name: Preview
+          children: Preview
+        - Acquisition
+      initial: Preview
+    - type: pytem.Preview
+      states:
+        - name: UpdateImage
+          on_enter: prepare_frame
+          children: PreviewRequest
+          remap:
+            Success: UpdateImage
+      initial: UpdateImage
+    - type: pytem.PreviewRequest

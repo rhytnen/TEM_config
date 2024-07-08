@@ -1,0 +1,4 @@
+ximea:
+  image_size: [5000, 5000]
+  output_dir: /data/tiles/
+  gain: 6
