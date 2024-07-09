@@ -15,22 +15,9 @@ services:
     command: pigeon-transitions --host broker /config/pytem.yaml
     volumes:
       - "config:/config"
-      - "data:/tiles"
+      - "/tmp:/tmp"
     depends_on:
       ximea:
-        condition: service_healthy
-      config:
-        condition: service_completed_successfully
-  ximea:
-    image: 10.128.25.8/ximea_service
-    command: XIMEA_service --host broker /config/ximea.yaml
-    volumes:
-      - "data:/tiles"
-      - "config:/config"
-    devices:
-      - "/dev/:/dev/"
-    depends_on:
-      broker:
         condition: service_healthy
       config:
         condition: service_completed_successfully
@@ -39,4 +26,3 @@ services:
       test: timeout 5s pigeon --host broker -s camera.status --one || exit 1
 volumes:
   config:
-  data:
