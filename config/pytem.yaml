@@ -6,12 +6,21 @@ pytem:
           children: Preview
         - Acquisition
       initial: Preview
-    - type: pytem.Preview
+    - type: pytem.preview.Preview
       states:
+        - name: AutoExposure
+          children: AutoExposure
         - name: UpdateImage
           on_enter: prepare_frame
           children: PreviewRequest
-          remap:
-            Success: UpdateImage
+      transitions:
+        - source: UpdateImage_Request
+          dest: AutoExposure
+          trigger: success
+          condition: auto_exposure
+        - source: UpdateImage_Request
+          dest: UpdateImage
+          trigger: success
       initial: UpdateImage
-    - type: pytem.PreviewRequest
+    - type: pytem.auto_exposure.AutoExposure
+    - type: pytem.preview.PreviewRequest

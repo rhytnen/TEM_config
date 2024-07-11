@@ -24,5 +24,17 @@ services:
     healthcheck:
       start_period: 10s
       test: timeout 5s pigeon --host broker -s camera.status --one || exit 1
+  tem_graph:
+    image: 10.128.25.8/tem_graph
+    command: TEM_graph /config/tem_graph.yaml
+    volumes:
+      - "config:/config"
+      - "/tmp:/tmp"
+    gpus: all
+    depends_on:
+      config:
+        condition: service_completed_successfully
+      broker:
+        condition: service_healthy
 volumes:
   config:

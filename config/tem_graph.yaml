@@ -1,0 +1,47 @@
+tem_graph:
+  nodes:
+    input:
+      type: SubscribeRawTileNode
+      to: read
+    read:
+      type: IMReadNode
+      args:
+        concurrency: serial
+      to: to_gpu
+    to_gpu:
+      type: ToGPUNode
+      args:
+        concurrency: serial
+      to: flip
+    flip:
+      type: FlipNodeGPU
+      args:
+        axis: horizontal
+        concurrency: serial
+      to: clahe
+    clahe:
+      type: CLAHENodeGPU
+      args:
+        concurrency: serial
+      to:
+        - fft
+        - min_max_mean
+    min_max_mean:
+      type: MinMaxMeanNodeGPU
+      args:
+        concurrency: serial
+      to: send_min_max_mean
+    send_min_max_mean:
+      type: PublishMinMaxMeanNode
+    fft:
+      type: FFTNodeGPU
+      args:
+        concurrency: serial
+      to: focus
+    focus:
+      type: FocusNodeGPU
+      args:
+        concurrency: serial
+      to: send_focus
+    send_focus:
+      type: PublishFocusNode
