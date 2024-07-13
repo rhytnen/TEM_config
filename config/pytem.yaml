@@ -1,20 +1,22 @@
 pytem:
   machines:
-    - type: pytem.Root
+    root:
+      type: pytem.Root
       states:
         - name: Preview
-          children: Preview
+          children: preview
         - Acquisition
       initial: Preview
-    - type: pytem.preview.Preview
+    preview:
+      type: pytem.preview.Preview
       states:
         - name: AutoExposure
-          children: AutoExposure
+          children: auto_exposure
           remap:
             Success: UpdateImage
         - name: UpdateImage
           on_enter: prepare_frame
-          children: PreviewRequest
+          children: preview_request
       transitions:
         - source: UpdateImage_Request
           dest: AutoExposure
@@ -24,5 +26,8 @@ pytem:
           dest: UpdateImage
           trigger: success
       initial: UpdateImage
-    - type: pytem.auto_exposure.AutoExposure
-    - type: pytem.preview.PreviewRequest
+    auto_exposure:
+      type: pytem.auto_exposure.AutoExposure
+    preview_request:
+      type: pytem.preview.PreviewRequest
+      success_state: False
