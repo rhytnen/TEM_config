@@ -10,6 +10,8 @@ pytem:
       states:
         - name: AutoExposure
           children: AutoExposure
+          remap:
+            Success: UpdateImage
         - name: UpdateImage
           on_enter: prepare_frame
           children: PreviewRequest
@@ -17,7 +19,7 @@ pytem:
         - source: UpdateImage_Request
           dest: AutoExposure
           trigger: success
-          condition: auto_exposure
+          conditions: auto_exposure
         - source: UpdateImage_Request
           dest: UpdateImage
           trigger: success
