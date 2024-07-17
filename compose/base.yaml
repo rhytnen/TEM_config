@@ -27,11 +27,18 @@ services:
     volumes:
       - "config:/config"
       - "/tmp:/tmp"
-    gpus: all
     depends_on:
       config:
         condition: service_completed_successfully
       broker:
         condition: service_healthy
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities:
+                - gpu
 volumes:
   config:
