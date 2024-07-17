@@ -7,11 +7,19 @@ pytem:
           children: preview
         - Acquisition
       initial: Preview
+      transitions:
+        - source: Preview_UpdateImage
+          dest: Acquisition
+          trigger: start_acquisition
     preview:
       type: pytem.preview.Preview
       states:
         - name: AutoExposure
           children: auto_exposure
+          remap:
+            Success: UpdateImage
+        - name: AutoFocus
+          children: auto_focus
           remap:
             Success: UpdateImage
         - name: UpdateImage
@@ -23,11 +31,17 @@ pytem:
           trigger: success
           conditions: auto_exposure
         - source: UpdateImage_Request
+          dest: AutoFocus
+          trigger: success
+          conditions: auto_focus
+        - source: UpdateImage_Request
           dest: UpdateImage
           trigger: success
       initial: UpdateImage
     auto_exposure:
       type: pytem.auto_exposure.AutoExposure
+    auto_focus:
+      type: pytem.auto_focus.AutoFocus
     preview_request:
       type: pytem.preview.PreviewRequest
       success_state: False
