@@ -3,6 +3,8 @@ tem_graph:
     input:
       type: SubscribeRawTileNode
       to: read
+      args:
+        host: broker
     read:
       type: IMReadNode
       args:
@@ -33,6 +35,8 @@ tem_graph:
       to: send_min_max_mean
     send_min_max_mean:
       type: PublishMinMaxMeanNode
+      args:
+        host: broker
     fft:
       type: FFTNodeGPU
       args:
@@ -45,3 +49,5 @@ tem_graph:
       to: send_focus
     send_focus:
       type: PublishFocusNode
+      args:
+        host: broker
