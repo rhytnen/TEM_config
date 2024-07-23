@@ -1,0 +1,15 @@
+compose:
+  services:
+    broker: null
+    ximea: null
+    pytem:
+      command: pigeon-transitions -g /graph/graph.png /config/pytem.yaml
+      volumes:
+        - "./materialized:/config"
+        - "./:/graph"
+      depends_on:
+        ximea: null
+        config:
+          condition: service_completed_successfully
+    tem_graph: null
+    scope: null

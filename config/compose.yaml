@@ -1,0 +1,71 @@
+common:
+  registry: 10.128.25.8
+  tile_dir: /tmp
+compose:
+  services:
+    config:
+      image: pigeon-config
+      command: pigeon-config -c -r /raw-config -o /config
+      volumes:
+        - "./materialized:/config"
+        - "./config:/raw-config"
+    broker:
+      image: apache/activemq-artemis
+      environment:
+        ANONYMOUS_LOGIN: true
+      ports:
+        - "61616:61616"
+        - "8161:8161"
+      healthcheck:
+        timeout: 15s
+        start_period: 10s
+        test: ["CMD", "curl", "-f", "http://localhost:8161/"]
+      depends_on:
+        config:
+          condition: service_completed_successfully
+    ximea:
+      image: "{{common.registry}}/ximea_service"
+      command: XIMEA_service --host broker /config/ximea.yaml
+      volumes:
+        - "{{common.tile_dir}}:{{common.tile_dir}}"
+        - "./materialized:/config"
+      devices:
+        - "/dev/ximea00:/dev/ximea00"
+      depends_on:
+        broker:
+          condition: service_healthy
+      healthcheck:
+        start_period: 10s
+        test: timeout 5s pigeon --host broker -s camera.status --one || exit 1
+    pytem:
+      image: "{{common.registry}}/pytem"
+      command: pigeon-transitions --host broker /config/pytem.yaml
+      volumes:
+        - "./materialized:/config"
+        - "{{common.tile_dir}}:{{common.tile_dir}}"
+      depends_on:
+        ximea:
+          condition: service_healthy
+    tem_graph:
+      image: "{{common.registry}}/tem_graph"
+      command: TEM_graph /config/tem_graph.yaml
+      volumes:
+        - "./materialized:/config"
+        - "{{common.tile_dir}}:{{common.tile_dir}}"
+      depends_on:
+        broker:
+          condition: service_healthy
+      deploy:
+        resources:
+          reservations:
+            devices:
+              - driver: nvidia
+                count: all
+                capabilities:
+                  - gpu
+    scope:
+      image: "{{common.registry}}/jeol_1200_service"
+      command: JEOL_1200_service --host broker /dev/scope /dev/aperture
+      depends_on:
+        broker:
+          condition: service_healthy

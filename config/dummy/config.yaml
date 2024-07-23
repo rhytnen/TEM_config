@@ -1,2 +1,6 @@
 ximea:
   dummy: true
+compose:
+  services:
+    ximea:
+      devices: null
