@@ -4,7 +4,7 @@ common:
 compose:
   services:
     config:
-      image: pigeon-config
+      image: "{{common.registry}}/pigeon-config"
       command: pigeon-config -c -r /raw-config -o /config
       volumes:
         - "./materialized:/config"
