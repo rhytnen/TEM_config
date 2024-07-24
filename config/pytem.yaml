@@ -22,6 +22,14 @@ pytem:
           children: auto_focus
           remap:
             Success: UpdateImage
+        - name: DarkField
+          children: darkfield
+          remap:
+            Success: UpdateImage
+        - name: BrightField
+          children: brightfield
+          remap:
+            Success: UpdateImage
         - name: UpdateImage
           on_enter: prepare_frame
           children: preview_request
@@ -42,6 +50,12 @@ pytem:
       type: pytem.auto_exposure.AutoExposure
     auto_focus:
       type: pytem.auto_focus.AutoFocus
+    darkfield:
+      type: pytem.flatfield.Darkfield
+      path: "{{common.tile_dir}}/darkfield.tiff"
+    brightfield:
+      type: pytem.flatfield.Brightfield
+      path: "{{common.tile_dir}}/brightfield.tiff"
     preview_request:
       type: pytem.preview.PreviewRequest
       success_state: False
