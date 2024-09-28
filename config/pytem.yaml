@@ -1,10 +1,20 @@
+common:
+  darkfield: "{{common.tile_dir}}/darkfield.tiff"
+  brightfield: "{{common.tile_dir}}/brightfield.tiff"
 pytem:
   root: pytem.root.Root
   machines:
     Preview:
       DarkField:
         config:
-          path: "{{common.tile_dir}}/darkfield.tiff"
+          path: "{{common.darkfield}}"
       BrightField:
         config:
-          path: "{{common.tile_dir}}/brightfield.tiff"
+          path: "{{common.brightfield}}"
+    Acquisition:
+      DarkField:
+        config:
+          path: "{{common.darkfield}}"
+      BrightField:
+        config:
+          path: "{{common.brightfield}}"
