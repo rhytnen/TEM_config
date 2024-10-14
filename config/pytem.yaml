@@ -1,6 +1,8 @@
 common:
   darkfield: "{{common.tile_dir}}/darkfield.tiff"
   brightfield: "{{common.tile_dir}}/brightfield.tiff"
+  aperture_size: [0.5, 1]
+  find_aperture_min_step: 10
 pytem:
   root: pytem.root.Root
   machines:
@@ -11,6 +13,10 @@ pytem:
       BrightField:
         config:
           path: "{{common.brightfield}}"
+      FindAperture:
+        config:
+          aperture_size: "{{common.aperture_size}}"
+          min_step: "{{common.find_aperture_min_step}}"
     Acquisition:
       DarkField:
         config:
@@ -18,3 +24,7 @@ pytem:
       BrightField:
         config:
           path: "{{common.brightfield}}"
+      FindAperture:
+        config:
+          aperture_size: "{{common.aperture_size}}"
+          min_step: "{{common.find_aperture_min_step}}"
