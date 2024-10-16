@@ -4,5 +4,5 @@ compose:
   services:
     scope:
       devices:
-        - "/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_AJ03A9EE-if00-port0:/dev/aperture"
-        - "/dev/serial/by-id/usb-Prolific_Technology_Inc._USB-Serial_Controller_D-if00-port0:/dev/scope"
+        - "/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_A103LPYA-if00-port0:/dev/aperture"
+        - "/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_AJ03AE5R-if00-port0:/dev/scope"
