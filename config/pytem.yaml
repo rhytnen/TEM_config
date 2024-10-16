@@ -1,61 +1,30 @@
+common:
+  darkfield: "{{common.tile_dir}}/darkfield.tiff"
+  brightfield: "{{common.tile_dir}}/brightfield.tiff"
+  aperture_size: [0.5, 1]
+  find_aperture_min_step: 10
 pytem:
+  root: pytem.root.Root
   machines:
-    root:
-      type: pytem.Root
-      states:
-        - name: Preview
-          children: preview
-        - Acquisition
-      initial: Preview
-      transitions:
-        - source: Preview_UpdateImage
-          dest: Acquisition
-          trigger: start_acquisition
-    preview:
-      type: pytem.preview.Preview
-      states:
-        - name: AutoExposure
-          children: auto_exposure
-          remap:
-            Success: UpdateImage
-        - name: AutoFocus
-          children: auto_focus
-          remap:
-            Success: UpdateImage
-        - name: DarkField
-          children: darkfield
-          remap:
-            Success: UpdateImage
-        - name: BrightField
-          children: brightfield
-          remap:
-            Success: UpdateImage
-        - name: UpdateImage
-          on_enter: prepare_frame
-          children: preview_request
-      transitions:
-        - source: UpdateImage_Request
-          dest: AutoExposure
-          trigger: success
-          conditions: auto_exposure
-        - source: UpdateImage_Request
-          dest: AutoFocus
-          trigger: success
-          conditions: auto_focus
-        - source: UpdateImage_Request
-          dest: UpdateImage
-          trigger: success
-      initial: UpdateImage
-    auto_exposure:
-      type: pytem.auto_exposure.AutoExposure
-    auto_focus:
-      type: pytem.auto_focus.AutoFocus
-    darkfield:
-      type: pytem.flatfield.Darkfield
-      path: "{{common.tile_dir}}/darkfield.tiff"
-    brightfield:
-      type: pytem.flatfield.Brightfield
-      path: "{{common.tile_dir}}/brightfield.tiff"
-    preview_request:
-      type: pytem.preview.PreviewRequest
-      success_state: False
+    Preview:
+      DarkField:
+        config:
+          path: "{{common.darkfield}}"
+      BrightField:
+        config:
+          path: "{{common.brightfield}}"
+      FindAperture:
+        config:
+          aperture_size: "{{common.aperture_size}}"
+          min_step: "{{common.find_aperture_min_step}}"
+    Acquisition:
+      DarkField:
+        config:
+          path: "{{common.darkfield}}"
+      BrightField:
+        config:
+          path: "{{common.brightfield}}"
+      FindAperture:
+        config:
+          aperture_size: "{{common.aperture_size}}"
+          min_step: "{{common.find_aperture_min_step}}"
