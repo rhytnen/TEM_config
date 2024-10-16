@@ -1,0 +1,21 @@
+common:
+  loki_url: http://10.128.25.8:3100/loki/api/v1/push
+  loki_tags: "scope:{{common.scope}}"
+compose:
+  services:
+    ximea:
+      environment:
+        LOKI_URL: "{{common.loki_url}}"
+        LOKI_TAGS: "{{common.loki_tags}}"
+    pytem:
+      environment:
+        LOKI_URL: "{{common.loki_url}}"
+        LOKI_TAGS: "{{common.loki_tags}}"
+    tem_graph:
+      environment:
+        LOKI_URL: "{{common.loki_url}}"
+        LOKI_TAGS: "{{common.loki_tags}}"
+    scope:
+      environment:
+        LOKI_URL: "{{common.loki_url}}"
+        LOKI_TAGS: "{{common.loki_tags}}"
