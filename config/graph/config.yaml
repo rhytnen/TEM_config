@@ -1,9 +1,12 @@
+common:
+  scope: graph
 compose:
   services:
     broker: null
     ximea: null
     pytem:
       command: pigeon-transitions -g /graph/graph.png /config/pytem.yaml
+      environment: null
       volumes:
         - "./materialized:/config"
         - "./:/graph"

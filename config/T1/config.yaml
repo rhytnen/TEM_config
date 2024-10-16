@@ -1,5 +1,5 @@
 common:
-  scope: T3
+  scope: T1
 compose:
   services:
     scope:
