@@ -69,3 +69,12 @@ compose:
       depends_on:
         broker:
           condition: service_healthy
+    stage:
+      image: "{{common.registry}}/sprite_stage_service"
+      command: Sprite_Stage_Service --host broker --locator usb:ix:0 /config/stage.yaml
+      volumes:
+        - "./materialized:/config"
+      privileged: true
+      depends_on:
+        broker:
+          condition: service_healthy

@@ -19,3 +19,7 @@ compose:
       environment:
         LOKI_URL: "{{common.loki_url}}"
         LOKI_TAGS: "{{common.loki_tags}}"
+    stage:
+      environment:
+        LOKI_URL: "{{common.loki_url}}"
+        LOKI_TAGS: "{{common.loki_tags}}"

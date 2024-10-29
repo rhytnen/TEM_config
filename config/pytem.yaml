@@ -3,6 +3,7 @@ common:
   brightfield: "{{common.tile_dir}}/brightfield.tiff"
   aperture_size: [0.5, 1]
   find_aperture_min_step: 10
+  gaussian_fit_decimation: 5
 pytem:
   root: pytem.root.Root
   machines:
@@ -17,6 +18,15 @@ pytem:
         config:
           aperture_size: "{{common.aperture_size}}"
           min_step: "{{common.find_aperture_min_step}}"
+      BeamSpread:
+        config:
+          std: 10000
+        Fit:
+          config:
+            decimate_stride: "{{common.gaussian_fit_decimation}}"
+        ChangeSpread:
+          config:
+            timeout: 2
     Acquisition:
       DarkField:
         config:
@@ -28,3 +38,10 @@ pytem:
         config:
           aperture_size: "{{common.aperture_size}}"
           min_step: "{{common.find_aperture_min_step}}"
+      BeamSpread:
+        Fit:
+          config:
+            decimate_stride: "{{common.gaussian_fit_decimation}}"
+        ChangeSpread:
+          config:
+            timeout: 2
