@@ -1,4 +1,4 @@
 ximea:
   image_size: [5000, 5000]
-  output_dir: /tmp/
-  gain: 10
+  output_dir: "{{common.tile_dir}}"
+  gain: 25
