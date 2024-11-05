@@ -26,7 +26,6 @@ tem_graph:
       args:
         concurrency: serial
       to:
-        - fft
         - min_max_mean
     min_max_mean:
       type: MinMaxMeanNodeGPU
@@ -35,19 +34,5 @@ tem_graph:
       to: send_min_max_mean
     send_min_max_mean:
       type: PublishMinMaxMeanNode
-      args:
-        host: broker
-    fft:
-      type: FFTNodeGPU
-      args:
-        concurrency: serial
-      to: focus
-    focus:
-      type: FocusNodeGPU
-      args:
-        concurrency: serial
-      to: send_focus
-    send_focus:
-      type: PublishFocusNode
       args:
         host: broker
