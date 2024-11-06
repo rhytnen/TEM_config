@@ -1,0 +1,40 @@
+common:
+  scope: sim
+compose:
+  services:
+    ximea: null
+    scope: null
+    stage: null
+    pytem:
+      depends_on:
+        ximea: null
+        simulator:
+          condition: service_started
+      environment:
+        LOKI_URL: null
+    simulator:
+      image: "{{common.registry}}/scope_sim"
+      command: ScopeSim --host broker /config/sim.yaml
+      volumes:
+        - "./materialized:/config"
+        - "{{common.tile_dir}}:{{common.tile_dir}}"
+      depends_on:
+        broker:
+          condition: service_healthy
+pytem:
+  machines:
+    Preview:
+      UpdateImage:
+        config:
+          timeout: 5
+sim:
+  allowed_mag: [1000, 2000, 5000]
+  allowed_lowmag: [50, 100, 500]
+  image_size: [1000, 1000]
+  cloudpath: precomputed://https://bossdb-open-data.s3.amazonaws.com/iarpa_microns/minnie/minnie65/em
+  resolution:
+    nm: 4
+    mag: 2000
+  tile_dir: "{{common.tile_dir}}"
+  rotation: 0
+  aperture_size: [2, 1.5]
