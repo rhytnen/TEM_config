@@ -63,6 +63,22 @@ compose:
                 count: all
                 capabilities:
                   - gpu
+    focus:
+      image: skimage_focus
+      command: skimage-focus --host broker
+      volumes:
+        - "{{common.tile_dir}}:{{common.tile_dir}}"
+      depends_on:
+        broker:
+          condition: service_healthy
+      deploy:
+        resources:
+          reservations:
+            devices:
+              - driver: nvidia
+                count: all
+                capabilities:
+                  - gpu
     scope:
       image: "{{common.registry}}/jeol_1200_service"
       command: JEOL_1200_service --host broker /dev/scope /dev/aperture
