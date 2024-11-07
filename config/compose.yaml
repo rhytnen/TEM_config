@@ -64,7 +64,7 @@ compose:
                 capabilities:
                   - gpu
     focus:
-      image: skimage_focus
+      image: "{{common.registry}}/skimage_focus"
       command: skimage-focus --host broker
       volumes:
         - "{{common.tile_dir}}:{{common.tile_dir}}"
