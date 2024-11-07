@@ -27,6 +27,27 @@ pytem:
       UpdateImage:
         config:
           timeout: 5
+      BrightField:
+        GetFrame:
+          config:
+            timeout: 5
+      FindAperture:
+        FindEdgePositiveX:
+          CheckEdge:
+            config:
+              timeout: 5
+        FindEdgeNegativeX:
+          CheckEdge:
+            config:
+              timeout: 5
+        FindEdgePositiveY:
+          CheckEdge:
+            config:
+              timeout: 5
+        FindEdgeNegativeY:
+          CheckEdge:
+            config:
+              timeout: 5
 sim:
   allowed_mag: [1000, 2000, 5000]
   allowed_lowmag: [50, 100, 500]
