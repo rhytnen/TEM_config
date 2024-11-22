@@ -1,9 +1,9 @@
 common:
   darkfield: "{{common.tile_dir}}/darkfield.tiff"
   brightfield: "{{common.tile_dir}}/brightfield.tiff"
-  aperture_size: [3, 1]
+  aperture_size: [4, 2]
   find_aperture_min_step: 1000
-  gaussian_fit_decimation: 5
+  gaussian_fit_decimation: 100
 pytem:
   root: pytem.root.Root
   machines:
@@ -11,9 +11,15 @@ pytem:
       DarkField:
         config:
           path: "{{common.darkfield}}"
+        GetFrame:
+          config:
+            timeout: 2
       BrightField:
         config:
           path: "{{common.brightfield}}"
+        GetFrame:
+          config:
+            timeout: 2
       FindAperture:
         config:
           aperture_size: "{{common.aperture_size}}"
@@ -26,7 +32,6 @@ pytem:
           config:
             timeout: 10
             decimate_stride: "{{common.gaussian_fit_decimation}}"
-            maxfev: 400
         ChangeSpread:
           config:
             timeout: 2
