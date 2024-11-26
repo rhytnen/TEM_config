@@ -26,12 +26,6 @@ pytem:
           min_step: "{{common.find_aperture_min_step}}"
           tape_threshold: 50
       BeamSpread:
-        config:
-          std: 20000
-        Fit:
-          config:
-            timeout: 10
-            decimate_stride: "{{common.gaussian_fit_decimation}}"
         ChangeSpread:
           config:
             timeout: 2
