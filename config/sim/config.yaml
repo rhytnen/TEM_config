@@ -14,9 +14,12 @@ compose:
     simulator:
       image: "{{common.registry}}/scope_sim"
       command: ScopeSim --host broker /config/sim.yaml
+      environment:
+        - "CLOUD_VOLUME_DIR=/cloudvolume"
       volumes:
         - "./materialized:/config"
         - "{{common.tile_dir}}:{{common.tile_dir}}"
+        - "cloudvolume:/cloudvolume"
       depends_on:
         broker:
           condition: service_healthy
@@ -60,6 +63,8 @@ compose:
     loki:
       driver: local
     grafana:
+      driver: local
+    cloudvolume:
       driver: local
 
 pytem:
