@@ -1,5 +1,6 @@
 common:
   scope: sim
+  loki_url: http://loki:3100/loki/api/v1/push
 compose:
   services:
     ximea: null
@@ -10,8 +11,6 @@ compose:
         ximea: null
         simulator:
           condition: service_started
-      environment:
-        LOKI_URL: null
     simulator:
       image: "{{common.registry}}/scope_sim"
       command: ScopeSim --host broker /config/sim.yaml
@@ -21,6 +20,48 @@ compose:
       depends_on:
         broker:
           condition: service_healthy
+    loki:
+      image: grafana/loki:2.9.2
+      ports:
+        - "3100:3100"
+      command: -config.file=/etc/loki/local-config.yaml
+      volumes:
+        - loki:/loki
+    grafana:
+      environment:
+        - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
+        - GF_AUTH_ANONYMOUS_ENABLED=true
+        - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      entrypoint:
+        - sh
+        - -euc
+        - |
+          mkdir -p /etc/grafana/provisioning/datasources
+          cat <<EOF > /etc/grafana/provisioning/datasources/ds.yaml
+          apiVersion: 1
+          datasources:
+          - name: Loki
+            type: loki
+            access: proxy
+            orgId: 1
+            url: http://loki:3100
+            basicAuth: false
+            isDefault: true
+            version: 1
+            editable: false
+          EOF
+          /run.sh
+      image: grafana/grafana:latest
+      ports:
+        - "3000:3000"
+      volumes:
+        - grafana:/var/lib/grafana
+  volumes:
+    loki:
+      driver: local
+    grafana:
+      driver: local
+
 pytem:
   machines:
     Preview:
@@ -48,10 +89,23 @@ pytem:
           CheckEdge:
             config:
               timeout: 5
+      BeamSpread:
+        config:
+          spread: 19
+          tol: 3
+      BeamCenter:
+        config:
+          final_tol: 75
+          initial_simplex_size: 5
+        NarrowBeam:
+          config:
+            spread: 3
+            tol: 3
+
 sim:
   allowed_mag: [1000, 2000, 5000]
   allowed_lowmag: [50, 100, 500]
-  image_size: [1000, 1000]
+  image_size: [500, 500]
   cloudpath: precomputed://https://bossdb-open-data.s3.amazonaws.com/iarpa_microns/minnie/minnie65/em
   resolution:
     nm: 4
