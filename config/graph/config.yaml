@@ -17,3 +17,4 @@ compose:
     tem_graph: null
     scope: null
     focus: null
+    stage: null
