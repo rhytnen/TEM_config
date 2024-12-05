@@ -26,7 +26,23 @@ pytem:
           min_step: "{{common.find_aperture_min_step}}"
           tape_threshold: 50
       BeamSpread:
+        config:
+          spread: 1300
+          tol: 100
         ChangeSpread:
+          config:
+            timeout: 2
+      BeamCenter:
+        config:
+          spread: 1100
+          initial_simplex_size: 100
+        NarrowBeam:
+          config:
+            tol: 200
+          ChangeSpread:
+            config:
+              timeout: 2
+        MoveBeam:
           config:
             timeout: 2
       AutoFocus:
