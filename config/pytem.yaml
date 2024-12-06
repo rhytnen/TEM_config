@@ -28,14 +28,16 @@ pytem:
       BeamSpread:
         config:
           spread: 1300
-          tol: 100
+          tol: 150
         ChangeSpread:
           config:
             timeout: 2
       BeamCenter:
         config:
           spread: 1100
-          initial_simplex_size: 100
+          initial_simplex_size: 50
+          stop_condition: 10
+          final_tol: 300
         NarrowBeam:
           config:
             tol: 200
@@ -44,7 +46,7 @@ pytem:
               timeout: 2
         MoveBeam:
           config:
-            timeout: 2
+            timeout: 3
       AutoFocus:
         ChangeFocus:
           config:
