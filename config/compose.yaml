@@ -15,7 +15,11 @@ compose:
         ANONYMOUS_LOGIN: true
       ports:
         - "61616:61616"
+        - "61614:61614"
         - "8161:8161"
+      configs:
+        - source: broker_config
+          target: /var/lib/artemis-instance/etc-override/broker.xml
       healthcheck:
         timeout: 15s
         start_period: 10s
