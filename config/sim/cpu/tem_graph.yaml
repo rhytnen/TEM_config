@@ -1,0 +1,11 @@
+tem_graph:
+  nodes:
+    read:
+      to: flip
+    flip:
+      type: FlipNode
+    clahe:
+      type: CLAHENode
+    min_max_mean:
+      type: MinMaxMeanNode
+    to_gpu: null

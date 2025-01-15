@@ -1,0 +1,6 @@
+compose:
+  services:
+    tem_graph:
+      deploy: null
+    focus:
+      deploy: null
