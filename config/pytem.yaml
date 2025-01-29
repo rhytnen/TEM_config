@@ -51,6 +51,10 @@ pytem:
         ChangeFocus:
           config:
             timeout: 2
+      CalibrateResolution:
+        config:
+          calibration_file: "/calibration/res.pkl"
+          tile_size: ["{{common.tile_size_x}}", "{{common.tile_size_y}}"]
     Acquisition:
       DarkField:
         config:

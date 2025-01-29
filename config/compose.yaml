@@ -47,6 +47,7 @@ compose:
       volumes:
         - "./materialized:/config"
         - "{{common.tile_dir}}:{{common.tile_dir}}"
+        - "calibration:/calibration"
       depends_on:
         ximea:
           condition: service_healthy
@@ -98,3 +99,6 @@ compose:
       depends_on:
         broker:
           condition: service_healthy
+  volumes:
+    calibration:
+      driver: local

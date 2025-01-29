@@ -1,6 +1,8 @@
 common:
   scope: sim
   loki_url: http://loki:3100/loki/api/v1/push
+  tile_size_x: 500
+  tile_size_y: 500
 compose:
   services:
     ximea: null
@@ -104,15 +106,22 @@ pytem:
           config:
             spread: 3
             tol: 3
+      CalibrateResolution:
+        config:
+          estimated_nm_per_px: 4
+          estimate_mag: 2000
+        GetImage:
+          config:
+            timeout: 5
 
 sim:
   allowed_mag: [1000, 2000, 5000]
   allowed_lowmag: [50, 100, 500]
-  image_size: [500, 500]
+  image_size: ["{{common.tile_size_x}}", "{{common.tile_size_y}}"]
   cloudpath: precomputed://https://bossdb-open-data.s3.amazonaws.com/iarpa_microns/minnie/minnie65/em
   resolution:
     nm: 4
     mag: 2000
   tile_dir: "{{common.tile_dir}}"
-  rotation: 0
+  rotation: 35
   aperture_size: [2, 1.5]

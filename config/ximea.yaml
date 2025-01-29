@@ -1,4 +1,4 @@
 ximea:
-  image_size: [5000, 5000]
+  image_size: ["{{common.tile_size_x}}", "{{common.tile_size_y}}"]
   output_dir: "{{common.tile_dir}}"
   gain: 25

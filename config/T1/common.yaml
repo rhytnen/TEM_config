@@ -1,2 +1,4 @@
 common:
   scope: T1
+  tile_size_x: 5000
+  tile_size_y: 5000
