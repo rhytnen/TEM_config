@@ -27,12 +27,38 @@ tem_graph:
         concurrency: serial
       to:
         - min_max_mean
+        - preview_copy
     min_max_mean:
       type: MinMaxMeanNodeGPU
       args:
         concurrency: serial
       to: send_min_max_mean
+    preview_copy:
+      type: CloneNodeGPU
+      to: downscale
     send_min_max_mean:
       type: PublishMinMaxMeanNode
       args:
         host: broker
+    downscale:
+      type: ResizeNodeGPU
+      args:
+        concurrency: serial
+        scale: 0.10
+        interpolation: 3
+      to: to_preview
+    to_preview:
+      type: FromGPUNode
+      args:
+        concurrency: serial
+      to: encode_preview
+    encode_preview:
+      type: Base64Node
+      args:
+        concurrency: serial
+      to: publish_preview
+    publish_preview:
+      type: PublishImageNode
+      args:
+        host: broker
+        topic: "tile.preview"
