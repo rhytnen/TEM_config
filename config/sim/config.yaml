@@ -102,6 +102,7 @@ pytem:
         config:
           final_tol: 75
           initial_simplex_size: 5
+          stop_condition: 2
         NarrowBeam:
           config:
             spread: 3
