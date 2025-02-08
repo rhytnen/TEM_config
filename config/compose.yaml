@@ -51,6 +51,8 @@ compose:
       depends_on:
         ximea:
           condition: service_healthy
+      environment:
+        LOG_LEVEL: "transitions=WARNING,pytem.components=DEBUG"
     tem_graph:
       image: "{{common.registry}}/tem_graph"
       command: TEM_graph /config/tem_graph.yaml
