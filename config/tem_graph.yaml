@@ -28,6 +28,24 @@ tem_graph:
       to:
         - min_max_mean
         - preview_copy
+        - to_save
+    to_save:
+      type: FromGPUNode
+      args:
+        concurrency: serial
+      to: save
+    save:
+      type: IMWriteNode
+      args:
+        concurrency: serial
+        extension: ".processed.tiff"
+        output_dir: "{{common.tile_dir}}"
+      to: send_processed
+    send_processed:
+      type: PublishFileNode
+      args:
+        host: broker
+        topic: "tile.processed"
     min_max_mean:
       type: MinMaxMeanNodeGPU
       args:
@@ -36,6 +54,8 @@ tem_graph:
     preview_copy:
       type: CloneNodeGPU
       to: downscale
+      args:
+        concurrency: serial
     send_min_max_mean:
       type: PublishMinMaxMeanNode
       args:
@@ -45,7 +65,6 @@ tem_graph:
       args:
         concurrency: serial
         scale: 0.10
-        interpolation: 3
       to: to_preview
     to_preview:
       type: FromGPUNode
