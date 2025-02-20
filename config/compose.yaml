@@ -38,6 +38,8 @@ compose:
       depends_on:
         broker:
           condition: service_healthy
+      environment:
+        ZIPKIN_HOST: zipkin
       healthcheck:
         start_period: 10s
         test: timeout 5s pigeon --host broker -s camera.status --one || exit 1
@@ -102,6 +104,8 @@ compose:
       depends_on:
         broker:
           condition: service_healthy
+      environment:
+        ZIPKIN_HOST: zipkin
     zipkin:
       image: openzipkin/zipkin
       ports:
