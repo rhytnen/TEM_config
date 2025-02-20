@@ -18,6 +18,7 @@ compose:
       command: ScopeSim --host broker /config/sim.yaml
       environment:
         - "CLOUD_VOLUME_DIR=/cloudvolume"
+        - "ZIPKIN_HOST=zipkin"
       volumes:
         - "./materialized:/config"
         - "{{common.tile_dir}}:{{common.tile_dir}}"

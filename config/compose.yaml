@@ -53,6 +53,7 @@ compose:
           condition: service_healthy
       environment:
         LOG_LEVEL: "transitions=WARNING,pytem.components=DEBUG"
+        ZIPKIN_HOST: zipkin
     tem_graph:
       image: "{{common.registry}}/tem_graph"
       command: TEM_graph /config/tem_graph.yaml
@@ -101,6 +102,10 @@ compose:
       depends_on:
         broker:
           condition: service_healthy
+    zipkin:
+      image: openzipkin/zipkin
+      ports:
+        - "9411:9411"
   volumes:
     calibration:
       driver: local
