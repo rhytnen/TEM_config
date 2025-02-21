@@ -28,6 +28,7 @@ tem_graph:
       to:
         - min_max_mean
         - preview_copy
+        - montage_copy
         - to_save
     to_save:
       type: FromGPUNode
@@ -51,33 +52,59 @@ tem_graph:
       args:
         concurrency: serial
       to: send_min_max_mean
-    preview_copy:
-      type: CloneNodeGPU
-      to: downscale
-      args:
-        concurrency: serial
     send_min_max_mean:
       type: PublishMinMaxMeanNode
       args:
-        host: broker
-    downscale:
+        host: broker      
+    preview_copy:
+      type: CloneNodeGPU
+      to: preview_scale
+      args:
+        concurrency: serial
+    preview_scale:
       type: ResizeNodeGPU
       args:
         concurrency: serial
         scale: 0.10
-      to: to_preview
-    to_preview:
+      to: preview_to_cpu
+    preview_to_cpu:
       type: FromGPUNode
       args:
         concurrency: serial
-      to: encode_preview
-    encode_preview:
+      to: preview_encode
+    preview_encode:
       type: Base64Node
       args:
         concurrency: serial
-      to: publish_preview
-    publish_preview:
+      to: preview_publish
+    preview_publish:
       type: PublishImageNode
       args:
         host: broker
         topic: "tile.preview"
+    montage_copy:
+      type: CloneNodeGPU
+      to: montage_scale
+      args:
+        concurrency: serial
+    montage_scale:
+      type: ResizeNodeGPU
+      args:
+        concurrency: serial
+        scale: 0.03
+      to: montage_to_cpu
+    montage_to_cpu:
+      type: FromGPUNode
+      args:
+        concurrency: serial
+      to: montage_encode
+    montage_encode:
+      type: Base64Node
+      args:
+        concurrency: serial
+      to: montage_publish
+    montage_publish:
+      type: PublishImageNode
+      args:
+        host: broker
+        topic: "tile.minimap"        
