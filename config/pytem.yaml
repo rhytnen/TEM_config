@@ -55,6 +55,11 @@ pytem:
         config:
           calibration_file: "/calibration/res.pkl"
           tile_size: ["{{common.tile_size_x}}", "{{common.tile_size_y}}"]
+          estimated_nm_per_px: 4
+          estimate_mag: 2000
+        GetImage:
+          config:
+            timeout: 5
     Acquisition:
       DarkField:
         config:
